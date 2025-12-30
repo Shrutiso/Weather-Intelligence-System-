@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="dashboard-bg {{ weather.bg if weather }}">
+
+<video autoplay muted loop playsinline class="clouds-video">
+    <source src="/static/clouds.mp4" type="video/mp4">
+</video>
+
+<div class="content">
+
+<div class="top-bar">
+    <h2>Weather Intelligence System</h2>
+    <div class="user">Hello, {{ user }}</div>
+
+    <div class="theme-toggle">
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle">🌙</label>
+    </div>
+</div>
+
+<form method="POST">
+
+<!-- ================= TOP ROW (3 CARDS) ================= -->
+<div class="cards three-cards">
+    <div class="card weather-card {{ weather.bg if weather }}">
+        {% if weather %}
+            <h3>Current Weather</h3>
+            <img src="/static/{{ weather.icon }}" class="weather-icon">
+            <h1>{{ weather.temp }}°C</h1>
+            <p>Humidity: {{ weather.humidity }}%</p>
+            <p>{{ weather.condition }}</p>
+        {% endif %}
+    </div>
+
+    <div class="card rain-card">
+        <h3>Rain Tomorrow?</h3>
+        {% if rain %}
+            <div class="rain-icon">☔</div>
+            <p>Chance of Rain: {{ rain.chance }}%</p>
+            {% if rain.umbrella %}
+                <p class="rain-alert yes">Take an Umbrella</p>
+            {% else %}
+                <p class="rain-alert no">No Rain Expected</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="card clothes-card">
+        <h3>Will My Clothes Dry Today?</h3>
+        {% if drying %}
+            <div class="clothes-icon">{{ "😊" if drying.good else "☹️" }}</div>
+            <p class="dry-status {{ 'good' if drying.good else 'bad' }}">{{ drying.status }}</p>
+            <small>{{ drying.message }}</small>
+        {% endif %}
+    </div>
+</div>
+<!-- ================= END TOP ROW ================= -->
+
+<!-- ================= BOTTOM ROW ================= -->
+<div class="bottom-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="card left-panel">
+        <!-- Places to Visit -->
+        {% if city_data and city_data.places %}
+        <div class="places-section">
+            <h3>Places to Visit in {{ city }}</h3>
+            <ul class="places-list">
+                {% for place in city_data.places %}
+                <li class="place-item" data-place="{{ place }}">📍 {{ place }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Travel Suggestions -->
+        <div class="suggestions-section">
+            <h3>Travel Suggestions</h3>
+            <div class="travel-suggestions-row">
+                <div class="city-autocomplete">
+                    <input type="text" id="city-input" placeholder="Type city name..." autocomplete="off" required>
+                    <input type="hidden" name="city" id="city-hidden">
+                    <div id="city-suggestions" class="suggestions-list"></div>
+                </div>
+                <button type="submit">Get Recommendation</button>
+            </div>
+        </div>
+
+        <!-- Plan Your Travel -->
+        <!-- Plan Your Travel -->
+<div class="booking-section">
+    <h3>Plan Your Travel Today</h3>
+    <div class="travel-book-buttons">
+        <!-- Train - IRCTC -->
+        <a id="train-btn" class="travel-btn train" target="_blank">🚆 Train</a>
+
+        <!-- Bus - redBus -->
+        <a id="bus-btn" class="travel-btn bus" target="_blank">🚌 Bus</a>
+
+        <!-- Car Rental - Zoomcar -->
+        <a href="https://www.zoomcar.com/" target="_blank" class="travel-btn car">🚗 Car Rental</a>
+    </div>
+</div>
+
+<script>
+// Wait for page to load
+document.addEventListener('DOMContentLoaded', function() {
+    const currentCity = "{{ city | default('') | trim | e }}";  // Selected destination
+    const fromCity = "Delhi";  // You can change this or make it dynamic later
+
+    // Train Button - IRCTC (best effort pre-fill)
+    document.getElementById('train-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = `https://www.irctc.co.in/nget/train-search`;
+        window.open(url, '_blank');
+        // Note: IRCTC doesn't support URL parameters reliably anymore
+        // So we just open the main page — user can search easily
+    });
+
+    // Bus Button - redBus (supports pre-fill)
+    document.getElementById('bus-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (currentCity) {
+            const url = `https://www.redbus.in/bus-tickets?fromCityName=${encodeURIComponent(fromCity)}&toCityName=${encodeURIComponent(currentCity)}`;
+            window.open(url, '_blank');
+        } else {
+            window.open('https://www.redbus.in/', '_blank');
+        }
+    });
+});
+</script>
+    </div>
+
+    <!-- RIGHT: MAP -->
+    <!-- RIGHT: MAP -->
+<!-- RIGHT: MAP -->
+<div class="card map-panel">
+    <h3>City Map</h3>
+    <iframe id="city-map" 
+        src="https://maps.google.com/maps?q={{ city if city else 'India' }}&z=10&output=embed"
+        width="100%" 
+        height="100%" 
+        style="border:none; border-radius: 18px;"
+        allowfullscreen=""
+        loading="lazy">
+    </iframe>
+</div>
+</div>
+<!-- ================= END BOTTOM ROW ================= -->
+
+</form>
+
+<a href="/logout" class="logout">Logout</a>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+// Dark mode
+const toggle = document.getElementById("darkModeToggle");
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    toggle.checked = true;
+}
+toggle.addEventListener("change", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", toggle.checked ? "dark" : "light");
+});
+
+// Full list of all cities
+const allCities = [
+    "Agartala","Agra","Agumbe","Ahmednagar","Aizawl","Ajanta","Ajmer","Akkalkot","Akola","Alibaug","Alleppey","Almora","Along","Alwar","Amaravathi","Amboli","Amravati","Amritsar","Anantapur","Anjanvel","Anshi National Park","Araku Valley","Arambol","Arossim","Arvalem Waterfall","Ashwem","Athirappilly","Auli","Aurangabad","Awas","Ayodhya","BR Hills","Badami","Badrinath","Bageshwar","Balpakram National Park","Bandipur","Bangalore","Barot","Bekal","Belur","Benaulim","Berhampore","Betla National Park","Betul","Bhagalpur","Bhagamandala","Bhandardara","Bharatpur","Bhimashankar","Bhimgad Wildlife Sanctuary","Bhimtal","Bhitarkanika","Bhubaneswar","Bikaner","Bilaspur","Biligiriranga Hills","Binsar","Bir Billing","Bishnupur","Bodh Gaya","Bomdila","Bundelkhand","Candolim","Cansaulim","Cavelossim","Chail","Chakrata","Chamarajanagar","Chamba","Chamoli","Champhai","Chandigarh","Chaundi","Chennai","Cherrapunji","Chettinad","Chikhaldara","Chikmagalur","Chilika Lake","Chiplun","Chitkul","Chittorgarh","Churachandpur","Coimbatore","Coorg (Madikeri)","Cotigao Wildlife Sanctuary","Courtallam","Cuttack","Dalhousie","Dampa Tiger Reserve","Dandeli","Dapoli","Darjeeling","Dawki","Delhi","Deoghar","Devbagh","Dhanaulti","Dhanushkodi","Dharamshala","Dharmanagar","Dharmasthala","Dibrugarh","Digha","Dirang","Diveagar","Dras","Dudhsagar Falls","Dzukou Valley","Ellora","Ernakulam","Fatehpur Sikri","Gangotri","Gangtok","Ganpatipule","Gavi","Gaya","Goa (Panaji)","Goa Velha","Gokarna","Gopalaswamy Betta","Gopalpur","Gorichen Peak","Gorumara National Park","Guhagar","Gulmarg","Guntur","Guruvayur","Guwahati","Haflong","Halebidu","Hamirpur","Hampi","Hanle","Harangi Dam","Haridwar","Harihareshwar","Harnai","Harsil","Hazaribagh","Hedvi","Honnavar","Horanadu","Horsley Hills","Hyderabad","Idukki","Igatpuri","Imphal","Intanki Wildlife Sanctuary","Itanagar","Jaipur","Jaisalmer","Jaldapara National Park","Jammu","Jampui Hills","Jamshedpur","Jhansi","Jibhi","Jim Corbett","Jodhpur","Jog Falls","Jorhat","Kabini","Kailashahar","Kalady","Kalimpong","Kalpa","Kanchipuram","Kangra","Kannur","Kanyakumari","Karaikudi","Kargal","Kargil","Karwar","Kasaragod","Kasauli","Kashid","Kasol","Kausani","Kaza","Kaziranga","Kedarnath","Keibul Lamjao","Kelshi","Kemmangundi","Khajjiar","Khangchendzonga National Park","Kihim","Kochi","Kodaikanal","Kodungallur","Kohima","Kolasib","Kolhapur","Kolkata","Kollam","Konark","Konni","Korlai Fort","Kovalam","Kudremukh","Kufri","Kullu","Kumarakom","Kumbhalgarh","Kurnool","Kurukshetra","Lachung","Ladghar","Lambasingi","Lansdowne","Lavasa","Leh","Living Root Bridges","Loktak Lake","Lonavala","Lucknow","Lunglei","Madurai","Mahabaleshwar","Mahabalipuram","Majorda","Majuli","Manali","Manas National Park","Mandarmani","Mandi","Mandrem","Mandwa","Mangalore","Manipal","Mapusa","Margao","Matheran","Mathura","Mawlynnong","McLeod Ganj","Mechuka","Mobor","Moirang","Mokokchung","Mollem National Park","Morjim","Morni Hills","Mouling National Park","Mount Abu","Mukteshwar","Mumbai","Munnar","Murlen National Park","Murud Janjira","Murudeshwar","Mussoorie","Mysore","Nagaon","Nagarhole","Nagpur","Nahan","Nainital","Nalanda","Namchi","Namdapha National Park","Nameri National Park","Narkanda","Nashik","Nathula Pass","Nelliyampathy","Nellore","Nelong Valley","Nerul","Netravali Wildlife Sanctuary","Nisargadhama","Nokrek National Park","Nongpoh","Nongstoin","North Goa (Calangute)","Nubra Valley","Nurpur","Old Goa","Ooty","Orang National Park","Pahalgam","Palakkad","Palampur","Panchgani","Pandharpur","Paonta Sahib","Pasighat","Patna","Patnitop","Pauri","Peermade","Pelling","Periyar","Pfutsero","Phawngpui Peak","Pinjore","Pithoragarh","Pobitora Wildlife Sanctuary","Pollachi","Pondicherry","Pondicherry (Auroville)","Ponmudi","Prashar Lake","Pratapgad Fort","Prayagjal","Pune","Puri","Pushkar","Puttaparthi","Querim","Raigad Fort","Rajgir","Rameshwaram","Ranchi","Ranikhet","Ranthambore","Ratnagiri","Ravangla","Reis Magos","Revanda Beach","Rewalsar","Rishikesh","Rourkela","Rudraprayag","Sabarimala","Saiha","Sakleshpur","Salem","Sambalpur","Sangla","Sangli","Saputara","Sariska","Saswane","Satara","Sattal","Sepahijala","Serchhip","Shegaon","Shillong","Shimla","Shimoga","Shirdi","Shravanabelagola","Shrivardhan","Silchar","Silent Valley","Siliguri","Simlipal National Park","Sindhudurg Fort","Sinquerim","Sipahijola Wildlife Sanctuary","Sirohi National Park","Solan","Solapur","Sonmarg","South Goa (Palolem)","Spice Plantations (Ponda)","Spiti Valley","Srinagar","Sringeri","Srisailam","Sultanpur Bird Sanctuary","Sundarbans","Sundarbans National Park","Sundernagar","Tabo","Talakaveri","Tamenglong","Tarkarli","Tawang","Tehri","Tezpur","Thanjavur","Thekkady","Thenmala","Thoubal","Thrissur","Tirthan Valley","Tiruchirappalli","Tirupati","Trimbakeshwar","Triund","Trivandrum","Tsomoriri Lake","Tuensang","Tuljapur","Tura","Tura Peak","Turtuk","Udaipur","Udaipur (Tripura)","Udupi","Ukhrul","Una","Unakoti","Utorda","Vagamon","Vaishali","Vaishno Devi","Valparai","Varanasi","Varca","Varkala","Vasco da Gama","Velas","Velsao","Vijayawada","Vijaydurg Fort","Visakhapatnam","Vivekananda Rock","Vrindavan","Wardha","Wayanad","Wokha","Yamunotri","Yavatmal","Yercaud","Yumthang Valley","Zanskar","Ziro"
+];
+
+const cityInput = document.getElementById('city-input');
+const cityHidden = document.getElementById('city-hidden');
+const suggestionsList = document.getElementById('city-suggestions');
+
+cityInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    suggestionsList.innerHTML = '';
+    if (query.length === 0) {
+        suggestionsList.style.display = 'none';
+        return;
+    }
+    const matches = allCities.filter(c => c.toLowerCase().includes(query)).slice(0, 10);
+    if (matches.length > 0) {
+        matches.forEach(city => {
+            const div = document.createElement('div');
+            div.textContent = city;
+            div.className = 'suggestion-item';
+            div.onclick = () => {
+                cityInput.value = city;
+                cityHidden.value = city;
+                suggestionsList.innerHTML = '';
+                suggestionsList.style.display = 'none';
+            };
+            suggestionsList.appendChild(div);
+        });
+        suggestionsList.style.display = 'block';
+    } else {
+        suggestionsList.style.display = 'none';
+    }
+});
+
+document.addEventListener('click', e => {
+    if (!cityInput.contains(e.target) && !suggestionsList.contains(e.target)) {
+        suggestionsList.style.display = 'none';
+    }
+});
+
+document.querySelector('form').addEventListener('submit', e => {
+    const val = cityInput.value.trim();
+    if (val && allCities.includes(val)) {
+        cityHidden.value = val;
+    } else {
+        e.preventDefault();
+        alert('Please select a valid city from the list.');
+    }
+});
+
+const mapIframe = document.getElementById('city-map');
+function updateCityMap(city) {
+    if (!city) return;
+    mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(city + ", India")}&z=11&output=embed`;
+}
+
+document.querySelectorAll('.place-item').forEach(item => {
+    item.style.cursor = 'pointer';
+    item.onclick = () => {
+        const place = item.dataset.place;
+        mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(place + ", India")}&z=16&output=embed`;
+        document.querySelectorAll('.place-item').forEach(i => {
+            i.style.fontWeight = 'normal';
+            i.style.color = '';
+        });
+        item.style.fontWeight = 'bold';
+        item.style.color = '#4c8bf5';
+    };
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const currentCity = "{{ city }}".trim();
+    if (currentCity) {
+        updateCityMap(currentCity);
+        cityInput.value = currentCity;
+    }
+});
+
+</script>
+
+<footer class="dashboard-footer">
+    <p>Made with ❤️ by Shruti Somvanshi | Powered by OpenWeatherMap</p>
+</footer>
+<a href="{{ url_for('smart_advice') }}" class="smart-advice-btn">🧠</a>
+
+</body>
+</html>

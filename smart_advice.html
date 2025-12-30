@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Weather Advice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='smart_advice.css') }}">
+    <style>
+        .quiz-card {
+            background: rgba(30, 30, 60, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+        }
+        .quiz-card h2 {
+            text-align: center;
+            color: #c4b5fd;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .suggest-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(15, 15, 40, 0.6);
+            border-radius: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body class="smart-advice-page">
+
+    <h1 class="page-title">🧠 Smart Weather Advice</h1>
+
+    <div class="neon-frame">
+        <div class="advice-card">
+            <h2>🌞 Today's Advice for {{ city }}</h2>
+            <ul>
+                {% for advice in advice_list %}
+                    <li>{{ advice }}</li>
+                {% endfor %}
+            </ul>
+            <a href="https://wa.me/?text={{ whatsapp_text | urlencode }}" class="whatsapp-btn" target="_blank">
+                📲 Send to WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Surprise Me Quiz Card -->
+    <div class="neon-frame quiz-card">
+        <h2>🎲 Surprise Me!</h2>
+        <p style="text-align:center; opacity:0.9;">Answer a few questions and I'll suggest the perfect destination for you!</p>
+
+        <form id="quizForm">
+            <div class="question">
+                <strong>1. Mountain lover or Beach person?</strong><br>
+                <label><input type="radio" name="terrain" value="mountain" required> 🏔️ Mountains & Hills</label>
+                <label><input type="radio" name="terrain" value="beach"> 🏖️ Beaches & Coast</label>
+                <label><input type="radio" name="terrain" value="both"> Both!</label>
+            </div>
+
+            <div class="question">
+                <strong>2. Can you handle extreme weather?</strong><br>
+                <label><input type="radio" name="weather" value="cold" required> ❄️ Very cold (below 5°C)</label>
+                <label><input type="radio" name="weather" value="hot"> 🔥 Very hot (above 35°C)</label>
+                <label><input type="radio" name="weather" value="moderate"> Mild & pleasant only</label>
+            </div>
+
+            <div class="question">
+                <strong>3. Do you enjoy adventure?</strong><br>
+                <label><input type="radio" name="adventure" value="trek" required> 🥾 Trekking / Hiking</label>
+                <label><input type="radio" name="adventure" value="water"> 🌊 Water sports / Rafting</label>
+                <label><input type="radio" name="adventure" value="relax"> 🛋️ Just relax & chill</label>
+            </div>
+
+            <div class="question">
+                <strong>4. Culture or Nature?</strong><br>
+                <label><input type="radio" name="interest" value="culture" required> 🛕 Temples & Heritage</label>
+                <label><input type="radio" name="interest" value="nature"> 🌿 Wildlife & Nature</label>
+                <label><input type="radio" name="interest" value="both"> Both equally</label>
+            </div>
+
+            <button type="submit" class="suggest-btn">✨ Suggest Destination</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+
+    <script>
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const terrain = form.terrain.value;
+            const weather = form.weather.value;
+            const adventure = form.adventure.value;
+            const interest = form.interest.value;
+
+            let suggestions = [];
+
+            // Simple logic based on answers
+            if (terrain === "mountain") {
+                if (weather === "cold") suggestions.push("Manali", "Leh", "Spiti Valley", "Auli");
+                else suggestions.push("Munnar", "Ooty", "Coorg", "Kodaikanal");
+            } else if (terrain === "beach") {
+                suggestions.push("Goa", "Gokarna", "Varkala", "Kovalam", "Alleppey");
+            }
+
+            if (adventure === "trek") suggestions = suggestions.filter(s => ["Manali", "Triund", "Kheerganga", "Valley of Flowers"].includes(s) || suggestions.length === 0);
+            if (interest === "culture") suggestions.push("Varanasi", "Amritsar", "Madurai", "Mysore");
+
+            // Random pick
+            const randomCity = suggestions.length > 0 
+                ? suggestions[Math.floor(Math.random() * suggestions.length)]
+                : ["Mumbai", "Jaipur", "Bangalore", "Hyderabad"][Math.floor(Math.random() * 4)];
+
+            document.getElementById('result').innerHTML = `
+                <h3 style="color:#c4b5fd; text-align:center;">Your Perfect Getaway:</h3>
+                <h2 style="text-align:center; color:#a855f7;">${randomCity}</h2>
+                <p style="text-align:center; margin-top:15px;">
+                    <a href="/dashboard" onclick="sessionStorage.setItem('surpriseCity', '${randomCity}')" 
+                       style="color:#60a5fa; text-decoration:underline;">
+                       → View Weather & Places in ${randomCity}
+                    </a>
+                </p>
+            `;
+            document.getElementById('result').style.display = 'block';
+        });
+
+        // Auto-fill if coming from surprise
+        window.onload = function() {
+            const surprise = sessionStorage.getItem('surpriseCity');
+            if (surprise && window.location.pathname.includes('smart-advice')) {
+                document.getElementById('result').innerHTML = `
+                    <h3 style="color:#c4b5fd;">Surprise Destination:</h3>
+                    <h2 style="color:#a855f7;">${surprise}</h2>
+                    <p><a href="/dashboard" style="color:#60a5fa;">Go see ${surprise} →</a></p>
+                `;
+                document.getElementById('result').style.display = 'block';
+                sessionStorage.removeItem('surpriseCity');
+            }
+        }
+    </script>
+</body>
+</html>
