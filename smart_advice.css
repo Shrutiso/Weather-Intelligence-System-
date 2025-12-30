@@ -1,0 +1,104 @@
+/* ===== PAGE BACKGROUND ===== */
+.smart-advice-page {
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+
+    background:
+        linear-gradient(rgba(5,5,25,0.75), rgba(5,5,25,0.75)),
+        url("/static/neon_starry_bg.png.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+}
+
+/* ===== PAGE TITLE ===== */
+.page-title {
+    margin-bottom: 30px;
+    font-size: 36px;
+    font-weight: 600;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
+}
+
+/* ===== NEON OUTER FRAME ===== */
+.neon-frame {
+    padding: 6px;
+    border-radius: 26px;
+
+    background: linear-gradient(
+        135deg,
+        #60a5fa,
+        #a855f7,
+        #ec4899
+    );
+
+    box-shadow:
+        0 0 40px rgba(168,85,247,0.8),
+        0 0 80px rgba(96,165,250,0.6);
+}
+
+/* ===== GLASS CARD ===== */
+.advice-card {
+    background: rgba(15, 15, 40, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    padding: 40px;
+    width: 420px;
+    border-radius: 20px;
+
+    box-shadow: inset 0 0 30px rgba(255,255,255,0.05);
+}
+
+/* ===== CARD TITLE ===== */
+.advice-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #e9d5ff;
+    font-size: 24px;
+}
+
+/* ===== LIST ===== */
+.advice-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.advice-card li {
+    margin-bottom: 14px;
+    font-size: 16px;
+}
+
+/* ===== WHATSAPP BUTTON ===== */
+.whatsapp-btn {
+    display: block;
+    margin-top: 28px;
+    padding: 15px;
+    text-align: center;
+
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: bold;
+
+    box-shadow: 0 0 20px rgba(34,197,94,0.7);
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+    margin-top: 25px;
+    text-decoration: none;
+    color: #c7d2fe;
+    font-size: 14px;
+    opacity: 0.85;
+}

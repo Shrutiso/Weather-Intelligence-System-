@@ -1,0 +1,817 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+}
+
+/* BACKGROUND */
+.dashboard-bg {
+    background: linear-gradient(180deg, #6fb1ff, #a6d0ff);
+    min-height: 100vh;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    color: white;
+}
+
+/* 🔧 1. FIXED CARD STYLE (TOP 3 CARDS) */
+.card {
+    background: rgba(255, 255, 255, 0.35);     /* Glassy translucent white */
+    backdrop-filter: blur(12px);              /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 28px 24px;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+
+    height: 260px;                 /* Keep fixed height for top cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 🔧 2. TOP 3 CARDS GRID */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 20px 40px;
+}
+
+/* 🔧 3. ICON + TEXT SCALING */
+.card h1 {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+/* 🔧 4. CONSISTENT HEIGHT FOR SPECIFIC CARDS */
+.rain-card,
+.clothes-card,
+.weather-card {
+    height: 260px;     /* SAME as .card */
+}
+
+/* WEATHER */
+.weather-icon {
+   width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 16px auto;  /* Forces perfect center */
+}
+
+.sunny {
+    background: linear-gradient(135deg, #fde68a, #f59e0b);
+}
+
+.cloudy {
+    background: linear-gradient(135deg, #e5e7eb, #94a3b8);
+}
+
+.rain {
+    background: linear-gradient(135deg, #93c5fd, #2563eb);
+}
+
+.storm {
+    background: linear-gradient(135deg, #475569, #020617);
+}
+
+/* RAIN */
+
+
+.rain-icon {
+    font-size: 48px;
+}
+
+.rain-alert.yes {
+    color: #ef4444;
+}
+
+.rain-alert.no {
+    color: #22c55e;
+}
+
+/* CLOTHES */
+
+
+.clothes-icon {
+    font-size: 48px;
+}
+
+.dry-status.good {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.dry-status.bad {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+/* TRAVEL */
+.travel-card {
+    background: rgba(255, 255, 255, 0.25);  /* transparent glass */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.travel-card button {
+    background: #4c8bf5;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* LOGOUT */
+.logout {
+    margin: 30px 40px;
+    display: inline-block;
+    color: white;
+}
+
+.clouds-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Keep text readable */
+.card h3,
+.card h1,
+.card p,
+.card small {
+    color: #0f172a;
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-bg {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #7db9ff, #b6dcff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Cloud background */
+.login-clouds {
+    position: absolute;
+    inset: 0;
+    background: url("/static/cloudss.png") repeat-x;
+    background-size: cover;
+    opacity: 0.45;
+    animation: moveClouds 120s linear infinite;
+    z-index: 0;
+}
+
+@keyframes moveClouds {
+    from { background-position-x: 0; }
+    to { background-position-x: -2000px; }
+}
+
+/* Wrapper */
+.login-wrapper {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+/* Title */
+.login-title {
+    color: white;
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+/* Glass card */
+.login-card-glass {
+    width: 360px;
+    padding: 35px 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* Icon */
+.login-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+/* Heading */
+.login-card-glass h2 {
+    margin-bottom: 25px;
+    color: #0f172a;
+}
+
+/* Inputs */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 15px;
+}
+
+.input-group span {
+    margin-right: 10px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+    background: transparent;
+}
+
+/* Button */
+.login-card-glass button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #4c8bf5, #6ea8ff);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-card-glass button:hover {
+    opacity: 0.95;
+}
+
+/* Footer text */
+.signup-text {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+/* ===== DARK MODE TOGGLE ===== */
+.theme-toggle {
+    position: fixed;
+    top: 55px;
+    right: 35px;
+    z-index: 1000;
+}
+
+.theme-toggle input {
+    display: none;
+}
+
+.theme-toggle label {
+    cursor: pointer;
+    font-size: 22px;
+    padding: 8px 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    transition: 0.3s;
+}
+
+/* ===== DARK MODE ===== */
+body.dark-mode {
+    background: url("/static/dark night.png") no-repeat center center fixed;
+    background-size: cover;
+    color: #f1f5f9;
+}
+
+/* Hide cloud video in dark mode */
+body.dark-mode .clouds-video {
+    display: none;
+}
+
+/* Dark cards */
+body.dark-mode .card,
+body.dark-mode .travel-card {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Text color fix */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode small {
+    color: #e5e7eb;
+}
+
+/* Toggle icon style in dark */
+body.dark-mode .theme-toggle label {
+    background: rgba(0,0,0,0.7);
+}
+
+body.dark-mode {
+    background: url("/static/dark night.png") no-repeat center center;
+    background-size: 120%;
+    animation: darkParallax 100s linear infinite;
+}
+
+@keyframes darkParallax {
+    0% {
+        background-position: 50% 0%;
+    }
+    100% {
+        background-position: 50% 100%;
+    }
+}
+
+/* ===== SMART ADVICE BUTTON ===== */
+.smart-advice-btn {
+    position: fixed;
+    top: 110px;
+    right: 35px;
+    font-size: 22px;
+    background: rgba(255,255,255,0.85);
+    padding: 10px 12px;
+    border-radius: 50%;
+    text-decoration: none;
+    z-index: 1000;
+    transition: 0.3s;
+}
+
+.smart-advice-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Dark mode support */
+body.dark-mode .smart-advice-btn {
+    background: rgba(0,0,0,0.7);
+}
+
+.whatsapp-btn {
+    display: inline-block;
+    background: #25D366;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ===== TRAVEL ROW ONLY ===== */
+.travel-row {
+    display: flex;
+    gap: 20px;
+    padding: 10px 40px;
+}
+
+.travel-row .card {
+    width: 48%;
+}
+
+.travel-book-card {
+    text-align: center;
+}
+
+.travel-book-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.travel-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.travel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+.travel-btn.train {
+    background: linear-gradient(135deg, #21327e, #2b3a7c);
+}
+
+.travel-btn.bus {
+    background: linear-gradient(135deg, #5343ce, #185a9d);
+}
+
+.travel-btn.car {
+    background: linear-gradient(135deg, #1f1d42, #402d60);
+}
+
+.city-map-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 🔧 5. BOTTOM SECTION */
+.bottom-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+    padding: 30px 40px;
+}
+
+/* Left bottom card (Places + Travel + Plan) */
+
+.left-panel .card {
+    height: 360px;
+    justify-content: flex-start;
+    padding: 28px 24px;
+    overflow-y: auto;  /* Scroll if too much text, card never stretches */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;  /* Nice breathing space between sections */
+}
+.left-panel h3:first-child {
+    margin-top: 0;                 /* Removes extra space above first heading */
+}
+
+
+/* Map card */
+.map-panel .card {
+   height: 360px;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* LEFT PANEL */
+.left-panel {
+    text-align: left;
+}
+
+/* Places list */
+.places-list {
+    list-style: none;
+    padding: 0;
+}
+
+.places-list li {
+    margin: 8px 0;
+}
+
+/* MAP PANEL */
+.map-panel {
+    height: 100%;
+}
+
+.map-panel iframe {
+   width: 100%;
+    height: 100%;
+    border-radius: 22px;
+}
+/* Better text contrast in light glass cards */
+.card h3,
+.card h1,
+.card p,
+.card small {
+    color: #1e293b;                /* Slightly darker for readability on translucent bg */
+}
+
+/* Make places list items look nicer */
+.places-list li {
+    margin: 12px 0;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.places-list li:hover {
+    color: #4c8bf5;
+}
+/* ================ TRAVEL PANEL FIX - CLEAN ALIGNMENT ================ */
+
+/* Travel Suggestions Section */
+.left-panel h3:nth-of-type(2) {  /* "Travel Suggestions" */
+    margin-bottom: 12px;
+}
+
+/* Row for Select + Button */
+.travel-suggestions-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+}
+
+.travel-suggestions-row select {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(4px);
+    font-size: 15px;
+    color: #1e293b;
+}
+
+.travel-suggestions-row button {
+    padding: 10px 20px;
+    background: #a0d8ff;     /* Light blue */
+    color: #1e293b;          /* Dark text for contrast */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.travel-suggestions-row button:hover {
+    opacity: 0.9;
+    background: #8acfff;
+}
+
+/* Plan Your Travel Section */
+.left-panel h3:last-of-type {  /* "Plan Your Travel Today" */
+    margin-top: 8px;
+    margin-bottom: 14px;
+}
+
+/* Travel mode buttons (Train/Bus/Cab) */
+.travel-book-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+
+.travel-btn {
+    flex: 1;
+    max-width: 120px;
+    text-align: center;
+    padding: 12px 10px;  /* Slightly more vertical padding */
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;                      /* Consistent spacing between sections */
+    height: 100%;
+}
+
+.left-panel > * {
+    margin: 0;                       /* Reset any unwanted external margins */
+}
+
+/* 3. Make Current Weather card use the same glassy translucent look (no bright yellow) */
+.weather-card {
+    background: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Override weather condition gradients to keep consistent glass effect */
+.weather-card.sunny,
+.weather-card.cloudy,
+.weather-card.rain,
+.weather-card.storm {
+    background: rgba(255, 255, 255, 0.35) !important;
+}
+/* ================ LEFT PANEL FIXES ================ */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+    padding: 28px 24px;
+    box-sizing: border-box;
+}
+
+.places-section, .suggestions-section, .booking-section {
+    flex-shrink: 0;
+}
+
+.places-section ul {
+    margin: 0;
+    padding-left: 0;
+}
+
+.places-section hr {
+    margin: 20px 0 0 0;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.5);
+}
+
+/* Make map panel same height */
+.map-panel {
+    padding: 0;
+    overflow: hidden;
+}
+
+.map-panel h3 {
+    margin: 0 0 12px 0;
+    padding: 24px 24px 0 24px;
+}
+
+/* Autocomplete input styling */
+.city-autocomplete {
+    position: relative;
+    flex: 1;
+}
+
+#city-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(6px);
+    font-size: 15px;
+    color: #1e293b;
+    box-sizing: border-box;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.95);
+    border-radius: 0 0 12px 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    color: #1e293b;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.suggestion-item:hover {
+    background: #4c8bf5;
+    color: white;
+}
+
+body.dark-mode .suggestions-list {
+    background: rgba(15,23,42,0.95);
+}
+
+body.dark-mode .suggestion-item {
+    color: #e5e7eb;
+}
+
+body.dark-mode .suggestion-item:hover {
+    background: #4c8bf5;
+}
+/* ================ DARK MODE IMPROVEMENTS ================ */
+
+/* Make all cards more opaque and solid in dark mode (like other cards) */
+body.dark-mode .card {
+    background: rgba(15, 23, 42, 0.85) !important;  /* Dark slate with higher opacity */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Ensure weather card doesn't stay transparent */
+body.dark-mode .weather-card,
+body.dark-mode .weather-card.sunny,
+body.dark-mode .weather-card.cloudy,
+body.dark-mode .weather-card.rain,
+body.dark-mode .weather-card.storm {
+    background: rgba(15, 23, 42, 0.85) !important;
+}
+
+/* Travel suggestions input box - make it match other cards */
+body.dark-mode #city-input {
+    background: rgba(30, 41, 59, 0.9);  /* Darker, more solid */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e5e7eb;
+}
+
+body.dark-mode #city-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Suggestions dropdown in dark mode */
+body.dark-mode .suggestions-list {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .suggestion-item {
+    color: #e5e7eb;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .suggestion-item:hover {
+    background: #4c8bf5;
+    color: white;
+}
+
+/* ================ MOVING BACKGROUND EFFECT ================ */
+
+/* Replace static background with subtle parallax sliding */
+body.dark-mode {
+    background: url("/static/dark night.png") no-repeat center center fixed;
+    background-size: 150%;  /* Larger than screen for movement */
+    animation: slowPan 120s linear infinite;
+}
+
+@keyframes slowPan {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Optional: Add very subtle floating clouds effect (if you want extra magic) */
+body.dark-mode::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.1));
+    pointer-events: none;
+    animation: floatClouds 80s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes floatClouds {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 0.5; transform: translateY(-20px); }
+}
+/* Dark mode map effect using CSS filter */
+body.dark-mode #city-map {
+    filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(105%);
+}
+
+/* Optional: Slight glow for premium look */
+body.dark-mode .map-panel {
+    box-shadow: 0 0 30px rgba(100, 100, 255, 0.3);
+}
+/* ================ FOOTER ================ */
+.dashboard-footer {
+    text-align: center;
+    padding: 20px 40px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .dashboard-footer {
+    color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Optional: Add a little heart animation */
+.dashboard-footer p {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dashboard-footer p::before {
+    content: "❤️";
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
